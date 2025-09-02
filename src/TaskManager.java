@@ -2,18 +2,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-
-// Я понял свою ошибку
 public class TaskManager {
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, SubTask> subtasks = new HashMap<>();
     private int nextId = 1;
-
-    private int generateId() {
-        return nextId++;
-    }
 
     public void addTask(Task task) {
         if (task == null) return;
@@ -148,6 +141,11 @@ public class TaskManager {
         return result;
     }
 
+
+    private int generateId() {
+        return nextId++;
+    }
+
     private void updateEpicStatus(Epic epic) {
         if (epic == null) return;
         List<Integer> subtaskIds = epic.getSubtaskIds();
@@ -155,13 +153,13 @@ public class TaskManager {
             epic.setStatus(TaskStatus.NEW);
             return;
         }
-        boolean allDONNE = true;
+        boolean allDONE = true;
         boolean allNEW = true;
         for (Integer subtaskId : subtaskIds) {
             SubTask subTask = subtasks.get(subtaskId);
             if (subTask != null) {
                 if (subTask.getStatus() != TaskStatus.DONE) {
-                    allDONNE = false;
+                    allDONE = false;
                 }
                 if (subTask.getStatus() != TaskStatus.NEW) {
                     allNEW = false;
@@ -169,7 +167,7 @@ public class TaskManager {
             }
         }
 
-        if (allDONNE) {
+        if (allDONE) {
             epic.setStatus(TaskStatus.DONE);
         } else if (allNEW) {
             epic.setStatus(TaskStatus.NEW);
